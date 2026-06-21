@@ -1,0 +1,37 @@
+name: Turborepo CI
+
+# Minimal stand-in for MystenLabs/ts-sdks "Turborepo CI". The real workflow runs
+# lint/build/test with AWS/GCP KMS secrets that can't be reproduced outside
+# Mysten's org — but NONE of that is part of the vulnerability. The only role
+# this workflow plays in the exploit is: (a) trigger on `pull_request` (incl.
+# from forks) and (b) complete with conclusion `success`, which is what fires the
+# privileged `release.yml` via `workflow_run`. This minimal version preserves
+# exactly those two properties.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+jobs:
+  build:
+    name: Lint, Build, and Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - uses: pnpm/action-setup@a3252b78c470c02df07e9d59298aecedc3ccdd6d # v3.0.0
+      - name: Install Nodejs
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+        with:
+          node-version: '24'
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Lint
+        run: pnpm -r --if-present run lint
+      - name: Build
+        run: pnpm -r --if-present run build
+      - name: Test
+        run: pnpm -r --if-present run test

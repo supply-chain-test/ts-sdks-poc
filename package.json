@@ -1,0 +1,10 @@
+{
+  "name": "ts-sdks-poc-root",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Authorized PoC mirror of the MystenLabs/ts-sdks release pipeline. Not affiliated with Mysten Labs.",
+  "packageManager": "pnpm@9.12.0",
+  "engines": {
+    "node": ">=24"
+  }
+}

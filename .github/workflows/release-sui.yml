@@ -1,0 +1,38 @@
+name: Release @sectest7331/sui
+
+# === FAITHFUL REPRODUCTION OF MystenLabs/ts-sdks .github/workflows/release-sui.yml ===
+# Only the package name/scope is changed to the reporter's scope.
+# Vulnerable construct preserved: forwards the attacker-controlled `inputs.ref`
+# straight into the reusable publisher (Weakness 4 setup). `if: github.ref ==
+# 'refs/heads/main'` is a tautology here too — this workflow is dispatched with
+# `--ref main`, so github.ref is always refs/heads/main.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry-run mode'
+        required: false
+        default: 'false'
+      ref:
+        description: 'Git ref or SHA to publish (defaults to main HEAD)'
+        required: false
+        default: ''
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+      id-token: write # OIDC trusted publishing
+    uses: ./.github/workflows/_release-package.yml
+    with:
+      package: '@sectest7331/sui'
+      dir: 'packages/sui'
+      dry_run: ${{ inputs.dry_run || 'false' }}
+      ref: ${{ inputs.ref }}
