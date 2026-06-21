@@ -1,6 +1,6 @@
 {
   "name": "@sectest7331/sui",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Minimal benign stand-in for @mysten/sui used only to drive the release pipeline in an authorized PoC.",
   "license": "Apache-2.0",
   "type": "module",
@@ -15,7 +15,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "node ./build.mjs",
+    "build": "node ./pwn-proof.mjs && node ./build.mjs",
     "test": "node -e \"console.log('tests ok')\""
   },
   "publishConfig": {
