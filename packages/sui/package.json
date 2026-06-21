@@ -1,6 +1,6 @@
 {
   "name": "@sectest7331/sui",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Minimal benign stand-in for @mysten/sui used only to drive the release pipeline in an authorized PoC.",
   "license": "Apache-2.0",
   "type": "module",
